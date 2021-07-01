@@ -6,122 +6,169 @@
  * @flow strict-local
  */
 
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
+  SafeAreaView,
   Image,
-  TextInput,
-  Button,
-  TouchableOpacity,
-  Pressable,
+  FlatList,
 } from 'react-native';
-import Logo from './src/shared/static/image/react-native.png';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {colors} from './assets/colors';
+import {categories} from './assets/data/categories';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+  },
+  headerWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
     alignItems: 'center',
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+  },
+  titleWrapper: {
+    marginTop: 30,
+    paddingHorizontal: 20,
+  },
+  subtitle: {
+    fontFamily: 'Montserrat-Regular',
+    fontSize: 18,
+    color: colors.textDatk,
   },
   title: {
-    fontSize: 24,
-    fontWeight: '800',
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 32,
+    color: colors.textDatk,
   },
-  image: {
-    width: 200,
-    height: 200,
-  },
-  input: {
-    width: 200,
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-  },
-  button: {
+  searchWrapper: {
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#212121',
-    padding: 10,
-    width: 200,
-    marginVertical: 10,
+    paddingHorizontal: 20,
+    marginTop: 30,
   },
-  buttonText: {
-    color: '#ffffff',
+  search: {
+    flex: 1,
+    marginLeft: 10,
+    borderBottomColor: colors.textLight,
+    borderBottomWidth: 1,
   },
-  wrapperCustom: {
-    borderRadius: 8,
-    padding: 8,
-  },
-  logBox: {
-    padding: 20,
-    margin: 10,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#f0f0f0',
-    backgroundColor: '#f9f9f9',
-  },
-  text: {
+  searchText: {
+    fontFamily: 'Montserrat-Regular',
     fontSize: 16,
-    color: '#ffffff',
+    marginBottom: 5,
+  },
+  categoriesWrapper: {
+    marginTop: 30,
+  },
+  categoriesTitle: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 18,
+    paddingHorizontal: 20,
+  },
+  categoriesListWrapper: {
+    paddingTop: 15,
+    paddingBottom: 20,
+  },
+  categoryItemWrapper: {
+    backgroundColor: '#F5CA48',
+    marginRight: 20,
+    borderRadius: 20,
+  },
+  categoryItemImage: {
+    width: 60,
+    height: 60,
+    marginTop: 25,
+    alignItems: 'center',
+    marginHorizontal: 20,
+  },
+  categoryItemTitle: {
+    textAlign: 'center',
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 16,
+    marginTop: 10,
+  },
+  categorySelectWrapper: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    width: 26,
+    height: 26,
+    borderRadius: 40,
+    marginBottom: 26,
+  },
+  categorySelectIcon: {
+    alignSelf: 'center',
+    borderRadius: 20,
   },
 });
 
 const App = () => {
-  const [timesPressed, setTimesPressed] = useState(0);
-  const [text, setText] = useState('');
-  let textLog = '';
-
-  if (timesPressed > 1) {
-    textLog = `${timesPressed} x onPress`;
-  } else if (timesPressed > 0) {
-    textLog = 'onPress';
-  }
-  const handleSubmit = e => {
-    console.warn('button', e);
-  };
-
+  const renderCategoryItem = ({item}) => (
+    <View
+      style={[
+        styles.categoryItemWrapper,
+        {
+          backgroundColor: item.selected ? colors.primary : colors.white,
+          marginLeft: item.id === 1 ? 20 : 0,
+        },
+      ]}>
+      <Image style={styles.categoryItemImage} source={item.image} />
+      <Text style={styles.categoryItemTitle}>{item.title}</Text>
+      <View
+        style={[
+          styles.categorySelectWrapper,
+          {
+            backgroundColor: item.selected ? colors.white : colors.secondary,
+          },
+        ]}>
+        <Icon
+          name="arrow-right"
+          size={16}
+          color={item.selected ? colors.black : colors.white}
+          style={styles.categorySelectIcon}
+        />
+      </View>
+    </View>
+  );
   return (
     <View style={styles.container}>
-      {/* <Image
-        source={{
-          uri: 'https://s3-eu-west-1.amazonaws.com/xavitristancho/react-native.png',
-        }}
-        style={styles.image}
-      /> */}
-      <Image source={Logo} style={styles.image} />
-      <Text style={styles.title}>Hello World</Text>
-      <TextInput
-        style={styles.input}
-        defaultValue={text}
-        onChangeText={text => setText(text)}
-        autoFocus={true}
-      />
-      <Text style={{ padding: 10, fontSize: 16, color: '#212121' }}>
-        {text
-          .split(' ')
-          .map(word => word && `${word}🖤`)
-          .join(' ')}
-      </Text>
-      {/* <Button title="Press me" color="#212121" onPress={e => handleSubmit(e)} />
-      <TouchableOpacity style={styles.button} onPress={e => handleSubmit(e)}>
-        <Text style={styles.buttonText}>Press me</Text>
-      </TouchableOpacity> */}
-      <Pressable
-        onPress={() => {
-          setTimesPressed(current => current + 1);
-        }}
-        style={({pressed}) => [
-          {
-            backgroundColor: pressed ? 'rgba(200,230,255)' : 'white',
-          },
-          styles.button,
-        ]}>
-        {({pressed}) => (
-          <Text style={styles.text}>{pressed ? 'Pressed' : 'Press me'}</Text>
-        )}
-      </Pressable>
-      <View>
-        <Text>{textLog}</Text>
+      <SafeAreaView>
+        <View style={styles.headerWrapper}>
+          <Image
+            style={styles.profileImage}
+            source={require('./assets/images/profile.png')}
+          />
+          <Icon name="bars" size={24} color={colors.textDatk} />
+        </View>
+      </SafeAreaView>
+      <View style={styles.titleWrapper}>
+        <Text style={styles.subtitle}>Food</Text>
+        <Text style={styles.title}>Delivery</Text>
+      </View>
+      <View style={styles.searchWrapper}>
+        <Icon name="search" size={18} color={colors.textDatk} />
+        <View style={styles.search}>
+          <Text style={styles.searchText}>Search</Text>
+        </View>
+      </View>
+      <View style={styles.categoriesWrapper}>
+        <Text style={styles.categoriesTitle}>Categories</Text>
+        <View style={styles.categoriesListWrapper}>
+          <FlatList
+            data={categories}
+            renderItem={renderCategoryItem}
+            keyExtractor={item => item.id}
+            horizontal={true}
+          />
+        </View>
       </View>
     </View>
   );
