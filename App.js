@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -14,10 +15,12 @@ import {
   SafeAreaView,
   Image,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {colors} from './assets/colors';
 import {categories} from './assets/data/categories';
+import {popular} from './assets/data/popular';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -108,6 +111,77 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 20,
   },
+  popularWrapper: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  popularTitle: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 18,
+  },
+  popularCardWrapper: {
+    backgroundColor: colors.white,
+    borderRadius: 25,
+    paddingTop: 20,
+    flexDirection: 'row',
+    overflow: 'hidden',
+  },
+  popularTopWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 20,
+  },
+  popularTopText: {
+    marginLeft: 10,
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 14,
+  },
+  popularTitleWrapper: {
+    marginTop: 20,
+    paddingLeft: 20,
+  },
+  popularTitlesTitle: {
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 14,
+    color: colors.textDatk,
+  },
+  popularTitlesWeight: {
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 14,
+    color: colors.textLight,
+    marginTop: 5,
+  },
+  popularCardBottom: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  addPizzaButton: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: 40,
+    paddingVertical: 20,
+    borderTopRightRadius: 25,
+    borderBottomLeftRadius: 25,
+  },
+  ratingWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 20,
+  },
+  rating: {
+    fontSize: 12,
+    fontFamily: 'Montserrat-Medium',
+    color: colors.textDatk,
+    marginLeft: 5,
+  },
+  popularCardRight: {
+    marginLeft: 0,
+  },
+  popularCardImage: {
+    width: 210,
+    height: 125,
+    resizeMode: 'contain',
+  },
 });
 
 const App = () => {
@@ -140,36 +214,77 @@ const App = () => {
   );
   return (
     <View style={styles.container}>
-      <SafeAreaView>
-        <View style={styles.headerWrapper}>
-          <Image
-            style={styles.profileImage}
-            source={require('./assets/images/profile.png')}
-          />
-          <Icon name="bars" size={24} color={colors.textDatk} />
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <SafeAreaView>
+          <View style={styles.headerWrapper}>
+            <Image
+              style={styles.profileImage}
+              source={require('./assets/images/profile.png')}
+            />
+            <Icon name="bars" size={24} color={colors.textDatk} />
+          </View>
+        </SafeAreaView>
+        <View style={styles.titleWrapper}>
+          <Text style={styles.subtitle}>Food</Text>
+          <Text style={styles.title}>Delivery</Text>
         </View>
-      </SafeAreaView>
-      <View style={styles.titleWrapper}>
-        <Text style={styles.subtitle}>Food</Text>
-        <Text style={styles.title}>Delivery</Text>
-      </View>
-      <View style={styles.searchWrapper}>
-        <Icon name="search" size={18} color={colors.textDatk} />
-        <View style={styles.search}>
-          <Text style={styles.searchText}>Search</Text>
+        <View style={styles.searchWrapper}>
+          <Icon name="search" size={18} color={colors.textDatk} />
+          <View style={styles.search}>
+            <Text style={styles.searchText}>Search</Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.categoriesWrapper}>
-        <Text style={styles.categoriesTitle}>Categories</Text>
-        <View style={styles.categoriesListWrapper}>
-          <FlatList
-            data={categories}
-            renderItem={renderCategoryItem}
-            keyExtractor={item => item.id}
-            horizontal={true}
-          />
+        <View style={styles.categoriesWrapper}>
+          <Text style={styles.categoriesTitle}>Categories</Text>
+          <View style={styles.categoriesListWrapper}>
+            <FlatList
+              data={categories}
+              renderItem={renderCategoryItem}
+              keyExtractor={item => item.id}
+              horizontal={true}
+            />
+          </View>
         </View>
-      </View>
+        <View style={styles.popularWrapper}>
+          <Text style={styles.popularTitle}>Popular</Text>
+          {popular.map((item, index) => (
+            <View
+              style={[
+                styles.popularCardWrapper,
+                {
+                  marginTop: item.id === 1 ? 10 : 20,
+                },
+              ]}>
+              <View>
+                <View>
+                  <View style={styles.popularTopWrapper}>
+                    <Icon name="star" size={12} color={colors.primary} />
+                    <Text style={styles.popularTopText}>top of the week</Text>
+                  </View>
+                  <View style={styles.popularTitleWrapper}>
+                    <Text style={styles.popularTitlesTitle}>{item.title}</Text>
+                    <Text style={styles.popularTitlesWeight}>
+                      Weight: {item.weight}
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.popularCardBottom}>
+                  <View style={styles.addPizzaButton}>
+                    <Icon name="plus" size={12} color={colors.textDatk} />
+                  </View>
+                  <View style={styles.ratingWrapper}>
+                    <Icon name="star" size={12} color={colors.textDatk} />
+                    <Text style={styles.rating}>{item.rating}</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.popularCardRight}>
+                <Image source={item.image} style={styles.popularCardImage} />
+              </View>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
     </View>
   );
 };
