@@ -3,11 +3,19 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Product from '../views/product';
 import {colors} from '../../assets/colors';
 import Home from '../views/home';
+import BottomTabNavigator from './bottom';
 const Stack = createStackNavigator();
 
 const MainNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator>
+      <Stack.Screen
+        name="BottomTabNavigator"
+        component={BottomTabNavigator}
+        options={{
+          header: () => null,
+        }}
+      />
       <Stack.Screen
         name="Home"
         component={Home}

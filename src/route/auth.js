@@ -31,7 +31,7 @@ const LogoTitle = () => {
 };
 const AuthNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="Login" gestureEnabled={false}>
       <Stack.Screen
         name="Login"
         component={Login}
