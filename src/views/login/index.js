@@ -92,11 +92,6 @@ const Login = ({navigation}) => {
     }
   };
 
-  console.warn({
-    username,
-    phoneNumber,
-    email,
-  });
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>

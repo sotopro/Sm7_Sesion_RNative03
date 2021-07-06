@@ -178,8 +178,6 @@ const styles = StyleSheet.create({
 });
 
 const Home = ({navigation, route}) => {
-  const {username, email, phoneNumber} = route.params;
-  console.warn('login data', {username, email, phoneNumber});
   const handleProduct = (item, position) => {
     const {title, weight, rating, image} = item;
     navigation.navigate('Product', {
