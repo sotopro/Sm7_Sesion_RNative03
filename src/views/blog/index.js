@@ -23,13 +23,13 @@ const styles = StyleSheet.create({
 
 const Blog = () => {
   const [data, setData] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
       const result = await photos.getPhotos();
       if (result.errors) {
-        setError(result.errors);
+        setError(true);
       } else {
         setData(result);
       }
@@ -60,6 +60,7 @@ const Blog = () => {
           keyExtractor={item => item.id}
         />
       )}
+      {error && <Text>Error</Text>}
     </View>
   );
 };
